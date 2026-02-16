@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
-
 import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
-import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import { Suspense } from "react";
 
 async function UserDetails() {
@@ -18,7 +16,7 @@ async function UserDetails() {
 
 export default function ProtectedPage() {
   return (
-    <div className="min-h-[100dvh] w-full flex-col flex overflow-auto p-6 gap-4">
+    <div className="min-h-[100dvh] w-full lg:min-w-[600px] md:max-w-[600px] flex-col flex overflow-auto p-6 gap-4">
       <div className="w-full">
         <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
           <InfoIcon size="16" strokeWidth={2} />
