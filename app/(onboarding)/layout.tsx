@@ -1,4 +1,3 @@
-import { ThemeProvider } from "next-themes";
 import React from "react";
 
 export default function OnboardingLayout({
@@ -7,13 +6,8 @@ export default function OnboardingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <main className="w-full flex h-screen lg:justify-center">{children}</main>
-    </ThemeProvider>
+    <main className="w-full h-screen flex justify-center items-center ">
+      {children}
+    </main>
   );
 }

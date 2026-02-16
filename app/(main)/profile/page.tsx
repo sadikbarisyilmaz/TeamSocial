@@ -14,7 +14,7 @@ async function UserDetails() {
   return JSON.stringify(data.claims, null, 2);
 }
 
-export default function ProtectedPage() {
+export default function Page() {
   return (
     <div className="min-h-[100dvh] w-full lg:min-w-[600px] md:max-w-[600px] flex-col flex overflow-auto p-6 gap-4">
       <div className="w-full">

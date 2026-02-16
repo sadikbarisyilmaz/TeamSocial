@@ -1,8 +1,12 @@
-export default function OnboardingPage() {
+import Onboarding from "@/components/onboarding";
+import { Suspense } from "react";
+
+export default async function Page() {
+  // return JSON.stringify(data.claims, null, 2);
+
   return (
-    <div className="flex flex-col items-center justify-center gap-4 text-center">
-      <h1 className="text-2xl font-bold">Welcome to TeamSocial!</h1>
-      <p className="text-muted-foreground">Let's get your profile set up.</p>
-    </div>
+    <Suspense>
+      <Onboarding />
+    </Suspense>
   );
 }
