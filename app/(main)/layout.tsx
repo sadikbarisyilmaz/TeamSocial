@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 // import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import "./globals.css";
+import "../globals.css";
 import { Navbar } from "@/components/navbar";
 import { Roboto } from "next/font/google";
 
@@ -41,7 +41,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="w-full flex h-screen lg:justify-center">
+            <Navbar />
             {children}
+            {/* Dummy Side */}
+            <div className="hidden lg:flex min-w-80  border-l w-full max-w-sm h-screen border-muted-foreground/20  flex-col  items-end p-4">
+              <div className="w-full h-60 border rounded-xl"></div>
+            </div>
           </main>
         </ThemeProvider>
       </body>
