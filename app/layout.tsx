@@ -39,9 +39,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="flex w-full h-full">
+          <main className="w-full flex h-screen lg:justify-center">
             <Navbar />
             {children}
+            <div className="hidden lg:flex min-w-80  border-l w-full max-w-sm h-screen border-muted-foreground/20  flex-col  items-end bg-foreground"></div>
           </main>
         </ThemeProvider>
       </body>
