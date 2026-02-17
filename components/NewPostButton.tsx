@@ -1,36 +1,27 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { createClient } from "@/lib/supabase/server";
 import { CreatePostForm } from "./forms/CreatePostForm";
+import { getAuth } from "@/lib/getAuth";
 
 export async function NewPostButton() {
-  const supabase = await createClient();
+  const { isLoggedIn, teamId } = await getAuth();
 
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
-
-  let teamId = null;
-  // Checks if user belogs to a team
-  if (user) {
-    const { data } = await supabase.from("profiles").select("team_id").single();
-    teamId = data?.team_id;
-  }
   return (
     <div className="w-full">
       {/* If guest: Show Login. If logged in but no team: Show "Finish Setup"  */}
-      {!user && (
+      {!isLoggedIn && (
         <Button asChild className="w-full flex">
           <Link className="w-full" href="/auth/login">
             Sign in
           </Link>
         </Button>
       )}
-      {user && !teamId && (
+      {isLoggedIn && !teamId && (
         <Button asChild className="w-full flex">
           <Link href="/onboarding">Complete Team Setup</Link>
         </Button>
       )}
-      {user && teamId && <CreatePostForm />}
+      {isLoggedIn && teamId && <CreatePostForm />}
     </div>
   );
 }

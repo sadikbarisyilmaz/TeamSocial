@@ -1,13 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
 import { BriefcaseBusiness, HomeIcon, User } from "lucide-react";
 import { LogoutButton } from "./LogoutButton";
 import Link from "next/link";
 import { NewPostButton } from "./NewPostButton";
+import { getAuth } from "@/lib/getAuth";
 
 export async function Navmenu() {
-  const supabase = await createClient();
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
+  const { isLoggedIn } = await getAuth();
 
   return (
     <div className=" w-72 h-screen flex flex-col gap-2">
@@ -25,7 +23,7 @@ export async function Navmenu() {
             </Link>
           </span>
           <span>
-            {user && (
+            {isLoggedIn && (
               <Link className="flex gap-2" href={"/team"}>
                 <BriefcaseBusiness size={22} strokeWidth={1.25} />
                 Team
@@ -33,7 +31,7 @@ export async function Navmenu() {
             )}
           </span>
           <span>
-            {user && (
+            {isLoggedIn && (
               <Link className="flex gap-2" href={"/profile"}>
                 <User size={22} strokeWidth={1.25} />
                 Profile
@@ -47,7 +45,7 @@ export async function Navmenu() {
         </div>
 
         <span className="flex gap-2 w-full justify-end pb-4">
-          {user && (
+          {isLoggedIn && (
             <div className="flex w-full gap-2">
               <LogoutButton />
             </div>

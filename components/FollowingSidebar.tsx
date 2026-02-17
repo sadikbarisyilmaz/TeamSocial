@@ -3,23 +3,23 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Info } from "lucide-react";
+import { getAuth } from "@/lib/getAuth";
 
 export default async function FollowingSidebar() {
-  const supabase = await createClient();
+  const { userId, teamId, isLoggedIn, email } = await getAuth();
 
-  // Get current user's team
-  const { data, error: authError } = await supabase.auth.getClaims();
-  if (!data?.claims)
+  if (!isLoggedIn)
     return (
       <div className="w-full sticky top-4 hidden lg:block min-w-80 max-w-sm  border-muted-foreground/20 m-4 h-fit"></div>
     );
 
+  const supabase = await createClient();
   const { data: profile } = await supabase
     .from("profiles")
     .select("team_id")
     .single();
 
-  if (!profile?.team_id) return null;
+  if (!teamId) return null;
 
   // Fetch last 3 followed teams
   const { data: following, error } = await supabase
@@ -33,7 +33,7 @@ export default async function FollowingSidebar() {
       )
     `,
     )
-    .eq("follower_team_id", profile.team_id)
+    .eq("follower_team_id", teamId)
     .order("created_at", { ascending: false })
     .limit(3);
 

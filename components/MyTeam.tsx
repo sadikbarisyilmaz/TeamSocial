@@ -8,30 +8,23 @@ import {
   CardTitle,
 } from "./ui/card";
 import { CopyInviteCode } from "./CopyInviteCode";
+import { getAuth } from "@/lib/getAuth";
 
 export async function MyTeam() {
-  const supabase = await createClient();
+  const { teamId, isLoggedIn } = await getAuth();
 
-  const { data, error: authError } = await supabase.auth.getClaims();
-  if (authError || !data?.claims) {
+  if (!isLoggedIn) {
     redirect("/auth/login");
   }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("team_id")
-    .eq("id", data.claims.sub)
-    .single();
-
-  // if user doesn't belong to a team
-  if (!profile?.team_id) {
+  if (!teamId) {
     return redirect("/onboarding");
   }
 
+  const supabase = await createClient();
   const { data: team, error: teamError } = await supabase
     .from("teams")
     .select("name, invite_code")
-    .eq("id", profile?.team_id)
+    .eq("id", teamId)
     .single();
 
   if (teamError) {

@@ -2,6 +2,7 @@
 
 import { customAlphabet } from "nanoid";
 import { createClient } from "@/lib/supabase/server";
+import { getAuth } from "@/lib/getAuth";
 
 const generateInviteCode = customAlphabet(
   "23456789ABCDEFGHJKLMNPQRSTUVWXYZ",
@@ -9,15 +10,13 @@ const generateInviteCode = customAlphabet(
 );
 
 export async function createTeam(
-  prevState: any,
   formData: FormData,
 ): Promise<{ error: string | null; success: boolean }> {
   const supabase = await createClient();
   const teamName = formData.get("teamName") as string;
 
-  const { data, error } = await supabase.auth.getClaims();
-
-  if (error || !data?.claims) {
+  const { userId } = await getAuth();
+  if (!userId) {
     return { error: "Not authenticated", success: false };
   }
 
@@ -37,7 +36,7 @@ export async function createTeam(
   const { error: profileError } = await supabase
     .from("profiles")
     .update({ team_id: team.id })
-    .eq("id", data?.claims?.sub);
+    .eq("id", userId);
 
   if (profileError) return { error: profileError.message, success: false };
 
@@ -45,19 +44,17 @@ export async function createTeam(
 }
 
 export async function joinTeam(
-  prevState: any,
   formData: FormData,
 ): Promise<{ error: string | null; success: boolean }> {
   const supabase = await createClient();
   const inviteCode = (formData.get("inviteCode") as string).toUpperCase();
 
-  const { data, error } = await supabase.auth.getClaims();
-
-  if (error || !data?.claims) {
+  const { userId } = await getAuth();
+  if (!userId) {
     return { error: "Not authenticated", success: false };
   }
 
-  // 1. Find the team by code
+  // Find the team by code
   const { data: team, error: findError } = await supabase
     .from("teams")
     .select("id")
@@ -71,11 +68,11 @@ export async function joinTeam(
     };
   }
 
-  // 2. Link the user to the found team
+  // Link the user to the found team
   const { error: updateError } = await supabase
     .from("profiles")
     .update({ team_id: team.id })
-    .eq("id", data?.claims.sub);
+    .eq("id", userId);
 
   if (updateError) return { error: updateError.message, success: false };
 

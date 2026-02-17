@@ -9,42 +9,16 @@ import {
 } from "./ui/card";
 import { CopyInviteCode } from "./CopyInviteCode";
 import { FollowButton } from "./FollowButton";
+import { getAuth } from "@/lib/getAuth";
 
 export async function TeamDetails({ teamId }: { teamId: string }) {
   const supabase = await createClient();
+  const { teamId: myTeamId } = await getAuth();
 
-  const { data, error: authError } = await supabase.auth.getClaims();
-  if (authError || !data?.claims) {
-    redirect("/auth/login");
-  }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("team_id")
-    .eq("id", data.claims.sub)
-    .single();
-
-  // Fetches invite code if user is member of this team
-  const isMember = profile?.team_id === teamId;
-
-  if (!isMember) {
-    const { data: team, error: teamError } = await supabase
-      .from("teams")
-      .select("name")
-      .eq("id", teamId)
-      .single();
-    if (teamError) {
-      return <p className="p-4 text-red-500">Error loading team details.</p>;
-    }
-
-    if (!team) {
-      return <p className="p-4">Team not found.</p>;
-    }
-  }
-
+  // fetch team data
   const { data: team, error: teamError } = await supabase
     .from("teams")
-    .select("name, invite_code")
+    .select("name")
     .eq("id", teamId)
     .single();
   if (teamError) {
@@ -55,54 +29,26 @@ export async function TeamDetails({ teamId }: { teamId: string }) {
     return <p className="p-4">Team not found.</p>;
   }
 
+  // check if user follows this team
   let isFollowing = false;
-
-  if (data?.claims) {
-    const { data: myProfile } = await supabase
-      .from("profiles")
-      .select("team_id")
+  if (myTeamId) {
+    const { data: followRecord } = await supabase
+      .from("follows")
+      .select("*")
+      .eq("follower_team_id", myTeamId)
+      .eq("following_team_id", teamId)
       .single();
 
-    if (myProfile?.team_id) {
-      const { data: followRecord } = await supabase
-        .from("follows")
-        .select("*")
-        .eq("follower_team_id", myProfile.team_id)
-        .eq("following_team_id", teamId)
-        .single();
-
-      isFollowing = !!followRecord;
-    }
+    isFollowing = !!followRecord;
   }
-
-  const inviteCode = (team as { invite_code?: string | null })?.invite_code;
 
   return (
     <Card className="m-4">
       <CardHeader>
         <CardTitle>{team.name}</CardTitle>
-        {isMember && (
-          <CardDescription>Here are your team details.</CardDescription>
-        )}
       </CardHeader>
       <CardContent>
-        {isMember ? (
-          <>
-            <h3 className="text-sm font-medium">Invite Code</h3>
-            <p className="text-sm text-muted-foreground">
-              Share this code with others to let them join your team.
-            </p>
-            {inviteCode ? (
-              <CopyInviteCode code={inviteCode} />
-            ) : (
-              <p className="text-sm text-muted-foreground mt-2">
-                No invite code for this team.
-              </p>
-            )}
-          </>
-        ) : (
-          <FollowButton teamId={teamId} isInitiallyFollowing={isFollowing} />
-        )}
+        <FollowButton teamId={teamId} isInitiallyFollowing={isFollowing} />
       </CardContent>
     </Card>
   );

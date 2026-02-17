@@ -1,27 +1,20 @@
 "use server";
 
+import { getAuth } from "@/lib/getAuth";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function toggleFollow(targetTeamId: string, isFollowing: boolean) {
-  const supabase = await createClient();
-
-  // Get current user's team
-  const { data, error } = await supabase.auth.getClaims();
-
-  if (error || !data?.claims) {
-    throw new Error("Not authenticated");
+  const { userId, teamId } = await getAuth();
+  if (!userId) {
+    return { error: "Not authenticated", success: false };
+  }
+  if (!teamId) {
+    return { error: "User has no team", success: false };
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("team_id")
-    .eq("id", data.claims.sub)
-    .single();
-
-  if (!profile?.team_id) throw new Error("User has no team");
-
-  const myTeamId = profile.team_id;
+  const supabase = await createClient();
+  const myTeamId = teamId;
 
   // Prevent self-following (Logic layer check)
   if (myTeamId === targetTeamId)
