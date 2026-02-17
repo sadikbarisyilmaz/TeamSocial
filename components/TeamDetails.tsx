@@ -55,6 +55,26 @@ export async function TeamDetails({ teamId }: { teamId: string }) {
     return <p className="p-4">Team not found.</p>;
   }
 
+  let isFollowing = false;
+
+  if (data?.claims) {
+    const { data: myProfile } = await supabase
+      .from("profiles")
+      .select("team_id")
+      .single();
+
+    if (myProfile?.team_id) {
+      const { data: followRecord } = await supabase
+        .from("follows")
+        .select("*")
+        .eq("follower_team_id", myProfile.team_id)
+        .eq("following_team_id", teamId)
+        .single();
+
+      isFollowing = !!followRecord;
+    }
+  }
+
   const inviteCode = (team as { invite_code?: string | null })?.invite_code;
 
   return (
@@ -81,7 +101,7 @@ export async function TeamDetails({ teamId }: { teamId: string }) {
             )}
           </>
         ) : (
-          <FollowButton teamId={teamId} />
+          <FollowButton teamId={teamId} isInitiallyFollowing={isFollowing} />
         )}
       </CardContent>
     </Card>
