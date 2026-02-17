@@ -1,4 +1,4 @@
-import GlobalFeed from "@/components/global-feed";
+import GlobalFeed from "@/components/GlobalFeed";
 import { Suspense } from "react";
 
 export default function Home() {

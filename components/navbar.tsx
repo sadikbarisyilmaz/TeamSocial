@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import { NavMenu } from "./navmenu";
+import { Navmenu } from "@/components/Navmenu";
 
 export const Navbar = () => {
   return (
     <nav className=" w-full max-w-sm h-screen border-r border-muted-foreground/20 flex flex-col items-end">
       <Suspense>
-        <NavMenu />
+        <Navmenu />
       </Suspense>
     </nav>
   );

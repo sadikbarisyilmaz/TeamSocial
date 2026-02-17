@@ -1,4 +1,4 @@
-import Onboarding from "@/components/onboarding";
+import Onboarding from "@/components/Onboarding";
 import { Suspense } from "react";
 
 export default async function Page() {

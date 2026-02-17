@@ -1,6 +1,6 @@
 "use client";
 
-import { joinTeam } from "@/app/(onboarding)/onboarding/actions";
+import { createTeam } from "@/app/actions/onboarding";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,13 +21,13 @@ function SubmitButton() {
       disabled={pending}
       className="w-full"
     >
-      {pending ? "Joining Team..." : "Join Team"}
+      {pending ? "Creating Team..." : "Create Team"}
     </Button>
   );
 }
 
-export function JoinTeamForm({ onSuccess }: { onSuccess: () => void }) {
-  const [state, formAction] = useActionState(joinTeam, initialState);
+export function CreateTeamForm({ onSuccess }: { onSuccess: () => void }) {
+  const [state, formAction] = useActionState(createTeam, initialState);
 
   useEffect(() => {
     if (state.success) {
@@ -38,13 +38,13 @@ export function JoinTeamForm({ onSuccess }: { onSuccess: () => void }) {
   return (
     <form action={formAction} className="flex w-full flex-col gap-4">
       <div className="grid w-full items-center gap-1.5">
-        <Label htmlFor="inviteCode">Invite Code</Label>
+        <Label htmlFor="teamName">Team Name</Label>
         <Input
           required
           type="text"
-          id="inviteCode"
-          name="inviteCode"
-          placeholder="AN50FMS7"
+          id="teamName"
+          name="teamName"
+          placeholder="Acme Inc."
         />
       </div>
       {state.error && <p className="text-sm text-red-500">{state.error}</p>}

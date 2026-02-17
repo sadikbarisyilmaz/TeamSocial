@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import OnboardingSteps from "./onboarding-steps";
+import OnboardingSteps from "./OnboardingSteps";
 
 export default async function Onboarding() {
   const supabase = await createClient();

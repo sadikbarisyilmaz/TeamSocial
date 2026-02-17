@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { CreatePostForm } from "./create-post-form";
+import { CreatePostForm } from "./forms/CreatePostForm";
 
 export async function NewPostButton() {
   const supabase = await createClient();

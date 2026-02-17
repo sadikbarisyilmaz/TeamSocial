@@ -1,10 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { HomeIcon, User } from "lucide-react";
-import { LogoutButton } from "./logout-button";
+import { LogoutButton } from "./LogoutButton";
 import Link from "next/link";
-import { NewPostButton } from "./new-post-button";
+import { NewPostButton } from "./NewPostButton";
 
-export async function NavMenu() {
+export async function Navmenu() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;

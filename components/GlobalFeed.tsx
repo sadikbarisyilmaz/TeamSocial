@@ -1,7 +1,7 @@
 // src/components/posts/GlobalFeed.tsx
 
 import { createClient } from "@/lib/supabase/server";
-import { PostCard, type PostWithTeam } from "./post-card";
+import { PostCard, type PostWithTeam } from "./PostCard";
 
 export default async function GlobalFeed() {
   const supabase = await createClient();

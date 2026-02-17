@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/dialog";
 
 import React, { useState } from "react"; // React is automatically imported in Next.js
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { createPost } from "@/app/actions/posts";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../ui/textarea";
 
 export const CreatePostForm = () => {
   const [error, setError] = useState<string | null>(null);

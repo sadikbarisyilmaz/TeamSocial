@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CreateTeamForm } from "./create-team-form";
-import { JoinTeamForm } from "./join-team-form";
+import { CreateTeamForm } from "./forms/CreateTeamForm";
+import { JoinTeamForm } from "./forms/JoinTeamForm";
 
 export default function OnboardingSteps() {
   const [step, setStep] = useState(1);
