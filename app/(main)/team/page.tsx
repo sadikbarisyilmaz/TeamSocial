@@ -1,13 +1,14 @@
 import { Banner } from "@/components/Banner";
-import { ProfileDetails } from "@/components/ProfileDetails";
+import { MyTeam } from "@/components/MyTeam";
+import { TeamDetails } from "@/components/TeamDetails";
 import { Suspense } from "react";
 
-export default function Page() {
+export default async function Page() {
   return (
     <div className="min-h-[100dvh] w-full lg:min-w-[600px] md:max-w-[600px] flex-col flex overflow-auto">
-      <Banner text="Profile Details" />
+      <Banner text="Team Details" />
       <Suspense>
-        <ProfileDetails />
+        <MyTeam />
       </Suspense>
     </div>
   );

@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { HomeIcon, User } from "lucide-react";
+import { BriefcaseBusiness, HomeIcon, User } from "lucide-react";
 import { LogoutButton } from "./LogoutButton";
 import Link from "next/link";
 import { NewPostButton } from "./NewPostButton";
@@ -18,18 +18,29 @@ export async function Navmenu() {
       </div>
       <div className="py-3 flex flex-col gap-4 px-4 h-screen justify-between">
         <div className="flex flex-col w-full gap-4">
-          <span className="flex gap-2">
-            <HomeIcon size={22} strokeWidth={1.25} />
-            <Link href={"/"}>Home</Link>
+          <span>
+            <Link className="flex gap-2" href={"/"}>
+              <HomeIcon size={22} strokeWidth={1.25} />
+              Home
+            </Link>
           </span>
           <span>
             {user && (
-              <div className="flex gap-2">
-                <User size={22} strokeWidth={1.25} />
-                <Link href={"/profile"}>Profile</Link>
-              </div>
+              <Link className="flex gap-2" href={"/team"}>
+                <BriefcaseBusiness size={22} strokeWidth={1.25} />
+                Team
+              </Link>
             )}
           </span>
+          <span>
+            {user && (
+              <Link className="flex gap-2" href={"/profile"}>
+                <User size={22} strokeWidth={1.25} />
+                Profile
+              </Link>
+            )}
+          </span>
+
           <span className="flex gap-2">
             <NewPostButton />
           </span>
