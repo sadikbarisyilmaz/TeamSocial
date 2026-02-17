@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { HomeIcon, User } from "lucide-react";
-import { CreatePostButton } from "./create-post-button";
 import { LogoutButton } from "./logout-button";
 import Link from "next/link";
+import { NewPostButton } from "./new-post-button";
 
 export async function NavMenu() {
   const supabase = await createClient();
@@ -31,7 +31,7 @@ export async function NavMenu() {
             )}
           </span>
           <span className="flex gap-2">
-            <CreatePostButton />
+            <NewPostButton />
           </span>
         </div>
 

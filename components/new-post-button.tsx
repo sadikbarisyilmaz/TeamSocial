@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { LogoutButton } from "./logout-button";
+import { CreatePostForm } from "./create-post-form";
 
-export async function CreatePostButton() {
+export async function NewPostButton() {
   const supabase = await createClient();
 
   const { data } = await supabase.auth.getClaims();
@@ -30,7 +30,7 @@ export async function CreatePostButton() {
           <Link href="/onboarding">Complete Team Setup</Link>
         </Button>
       )}
-      {user && teamId && <Button className="w-full">Create Post</Button>}
+      {user && teamId && <CreatePostForm />}
     </div>
   );
 }
