@@ -1,9 +1,9 @@
 "use client";
 
-import { CreateTeamForm } from "@/app/(onboarding)/onboarding/create-team";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CreateTeamForm } from "./create-team-form";
 
 export default function OnboardingSteps() {
   const [step, setStep] = useState(1);
