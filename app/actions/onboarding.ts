@@ -10,6 +10,7 @@ const generateInviteCode = customAlphabet(
 );
 
 export async function createTeam(
+  prevState: any,
   formData: FormData,
 ): Promise<{ error: string | null; success: boolean }> {
   const supabase = await createClient();
@@ -44,6 +45,7 @@ export async function createTeam(
 }
 
 export async function joinTeam(
+  prevState: any,
   formData: FormData,
 ): Promise<{ error: string | null; success: boolean }> {
   const supabase = await createClient();
