@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Navmenu } from "@/components/Navmenu";
+import { Navmenu } from "./Navmenu";
 
 export const Navbar = () => {
   return (

@@ -1,6 +1,5 @@
 import { Banner } from "@/components/Banner";
 import { MyTeam } from "@/components/MyTeam";
-import { TeamDetails } from "@/components/TeamDetails";
 import { Suspense } from "react";
 
 export default async function Page() {
