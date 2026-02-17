@@ -42,6 +42,6 @@ export async function toggleFollow(targetTeamId: string, isFollowing: boolean) {
     });
   }
 
-  revalidatePath(`/teams/${targetTeamId}`);
+  revalidatePath(`/team/${targetTeamId}`);
   revalidatePath("/");
 }
