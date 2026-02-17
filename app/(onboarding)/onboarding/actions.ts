@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { customAlphabet } from "nanoid";
 import { createClient } from "@/lib/supabase/server";
 
@@ -9,14 +8,17 @@ const generateInviteCode = customAlphabet(
   8,
 );
 
-export async function createTeam(formData: FormData) {
+export async function createTeam(
+  prevState: any,
+  formData: FormData,
+): Promise<{ error: string | null; success: boolean }> {
   const supabase = await createClient();
   const teamName = formData.get("teamName") as string;
 
   const { data, error } = await supabase.auth.getClaims();
 
   if (error || !data?.claims) {
-    Error("Not authenticated");
+    return { error: "Not authenticated", success: false };
   }
 
   // 1. Create the team
@@ -29,7 +31,7 @@ export async function createTeam(formData: FormData) {
     .select()
     .single();
 
-  if (teamError) return { error: teamError.message };
+  if (teamError) return { error: teamError.message, success: false };
 
   // 2. Link the user to the team
   const { error: profileError } = await supabase
@@ -37,19 +39,22 @@ export async function createTeam(formData: FormData) {
     .update({ team_id: team.id })
     .eq("id", data?.claims?.sub);
 
-  if (profileError) return { error: profileError.message };
+  if (profileError) return { error: profileError.message, success: false };
 
-  redirect("/");
+  return { error: null, success: true };
 }
 
-export async function joinTeam(formData: FormData) {
+export async function joinTeam(
+  prevState: any,
+  formData: FormData,
+): Promise<{ error: string | null; success: boolean }> {
   const supabase = await createClient();
   const inviteCode = (formData.get("inviteCode") as string).toUpperCase();
 
   const { data, error } = await supabase.auth.getClaims();
 
   if (error || !data?.claims) {
-    Error("Not authenticated");
+    return { error: "Not authenticated", success: false };
   }
 
   // 1. Find the team by code
@@ -60,16 +65,19 @@ export async function joinTeam(formData: FormData) {
     .single();
 
   if (!team || findError) {
-    return { error: "Invalid invite code. Please check and try again." };
+    return {
+      error: "Invalid invite code. Please check and try again.",
+      success: false,
+    };
   }
 
   // 2. Link the user to the found team
   const { error: updateError } = await supabase
     .from("profiles")
     .update({ team_id: team.id })
-    .eq("id", !data?.claims.sub);
+    .eq("id", data?.claims.sub);
 
-  if (updateError) return { error: updateError.message };
+  if (updateError) return { error: updateError.message, success: false };
 
-  redirect("/");
+  return { error: null, success: true };
 }

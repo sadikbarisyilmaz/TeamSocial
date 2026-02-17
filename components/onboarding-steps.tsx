@@ -1,5 +1,6 @@
 "use client";
 
+import { CreateTeamForm } from "@/app/(onboarding)/onboarding/create-team";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -56,15 +57,12 @@ export default function OnboardingSteps() {
       {step === 3 && (
         <div className="flex flex-col items-center gap-4 text-center">
           <h1 className="text-2xl font-bold">Create a Team</h1>
-          <p className="text-muted-foreground">
-            This is where the create team form will go.
-          </p>
-          {/* TODO: Create team form will be added here */}
-          <div className="flex gap-4 mt-4">
+          <p className="text-muted-foreground">Give your team a name.</p>
+          <CreateTeamForm onSuccess={() => setStep(4)} />
+          <div className="mt-2">
             <Button onClick={() => setStep(1)} variant="outline">
               Go Back
             </Button>
-            <Button onClick={() => setStep(4)}>Create Team</Button>
           </div>
         </div>
       )}
