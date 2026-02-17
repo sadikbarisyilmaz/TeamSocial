@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { formatDistanceToNow } from "date-fns";
+import Link from "next/link";
 
 export type PostWithTeam = {
   id: string;
@@ -33,22 +34,34 @@ export function PostCard({ post }: PostCardProps) {
       .toUpperCase() || "??";
 
   const isLongPost = post.content.length > characterLimit;
-
   return (
     <Card className="rounded-none space-y-2">
-      <CardHeader className="flex flex-row items-center space-x-4 pb-2">
-        <Avatar>
-          <AvatarFallback>{teamInitials}</AvatarFallback>
-        </Avatar>
-        <div className="flex-1">
-          <div className="flex justify-between items-start">
-            <CardTitle className="text-base font-bold ">{teamName}</CardTitle>
-            <span className="text-xs text-gray-500 whitespace-nowrap">
-              {formatDistanceToNow(new Date(post.created_at), {
-                addSuffix: true,
-              })}
+      <CardHeader className="flex flex-row justify-between space-x-4 pb-2">
+        <Link
+          key={post.id}
+          href={`/team/${post.teams?.id}`}
+          className="flex items-center gap-3 group"
+        >
+          <Avatar className="h-8 w-8">
+            <AvatarFallback className="text-[10px] bg-blue-100 text-blue-700">
+              {post.teams?.name.substring(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col gap-1">
+            <span className="text-sm font-medium group-hover:underline leading-none">
+              {post.teams?.name}
+            </span>
+            <span className="text-[10px] text-muted-foreground">
+              View profile
             </span>
           </div>
+        </Link>
+        <div className="flex">
+          <span className="text-xs text-gray-500 whitespace-nowrap">
+            {formatDistanceToNow(new Date(post.created_at), {
+              addSuffix: true,
+            })}
+          </span>
         </div>
       </CardHeader>
       <CardContent>

@@ -9,7 +9,10 @@ export default async function FollowingSidebar() {
 
   // Get current user's team
   const { data, error: authError } = await supabase.auth.getClaims();
-  if (!data?.claims) return null;
+  if (!data?.claims)
+    return (
+      <div className="w-full sticky top-4 hidden lg:block min-w-80 max-w-sm  border-muted-foreground/20 m-4 h-fit"></div>
+    );
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -70,7 +73,7 @@ export default async function FollowingSidebar() {
                 {record.following.name.substring(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <span className="text-sm font-medium group-hover:underline leading-none">
                 {record.following.name}
               </span>
