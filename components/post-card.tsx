@@ -35,7 +35,7 @@ export function PostCard({ post }: PostCardProps) {
   const isLongPost = post.content.length > characterLimit;
 
   return (
-    <Card>
+    <Card className=" rounded-none">
       <CardHeader className="flex flex-row items-center space-x-4 pb-2">
         <Avatar>
           <AvatarFallback>{teamInitials}</AvatarFallback>

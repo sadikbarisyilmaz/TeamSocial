@@ -36,7 +36,7 @@ export default async function GlobalFeed() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="">
       {(posts as unknown as PostWithTeam[]).map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
