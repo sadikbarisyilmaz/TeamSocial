@@ -50,7 +50,7 @@ export const CreatePostForm = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full flex">New Post</Button>
+        <Button className="w-full flex  mt-4">New Post</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>

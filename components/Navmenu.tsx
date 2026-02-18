@@ -28,23 +28,23 @@ export async function Navmenu() {
               Home
             </Link>
           </span>
-          <span>
-            {isLoggedIn && (
+          {isLoggedIn && (
+            <span>
               <Link className="flex gap-2" href={"/team"}>
                 <Users size={22} strokeWidth={1.25} />
                 My Team
               </Link>
-            )}
-          </span>
-          <span>
-            {isLoggedIn && (
+            </span>
+          )}
+          {isLoggedIn && (
+            <span>
               <Link className="flex gap-2" href={"/account"}>
                 <Settings size={22} strokeWidth={1.25} />
                 Account
               </Link>
-            )}
-          </span>
-          <span className="flex gap-2 mt-4">
+            </span>
+          )}
+          <span className="flex gap-2">
             <NewPostButton />
           </span>
         </div>

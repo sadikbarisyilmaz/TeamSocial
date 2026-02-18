@@ -1,45 +1,70 @@
-// src/components/posts/GlobalFeed.tsx
+"use client";
 
-import { createClient } from "@/lib/supabase/server";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { fetchPostsPage, POSTS_PER_PAGE } from "@/lib/queries/posts";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 import { PostCard, type PostWithTeam } from "./PostCard";
 
-export default async function GlobalFeed() {
-  const supabase = await createClient();
+export default function GlobalFeed() {
+  const { ref, inView } = useInView();
 
-  // Fetch posts with team details
-  // Note: 'teams!inner' ensures we only get posts that have a valid team
-  const { data: posts, error } = await supabase
-    .from("posts")
-    .select(
-      `
-      id,
-      content,
-      created_at,
-      teams (
-        id,
-        name
-      )
-    `,
-    )
-    .order("created_at", { ascending: false });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useInfiniteQuery({
+      queryKey: ["global-feed"],
+      queryFn: fetchPostsPage,
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        // If the last page was full, assume there's more
 
-  if (error) {
-    return <p className="text-red-500">Error loading feed: {error.message}</p>;
-  }
+        return lastPage.length === POSTS_PER_PAGE ? allPages.length : undefined;
+      },
+    });
 
-  if (!posts || posts.length === 0) {
+  // Automatically fetch when the user scrolls to the bottom "ref"
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  if (status === "pending")
     return (
-      <p className="text-gray-500 text-center py-10">
-        No posts yet. Be the first to share something!
+      <p className="flex justify-center items-center w-full p-2 text-center text-xs">
+        Loading initial posts...
       </p>
     );
-  }
+  if (status === "error")
+    return (
+      <p className="flex justify-center items-center w-full p-2 text-center text-xs">
+        Error loading feed.
+      </p>
+    );
 
   return (
     <div className="">
-      {(posts as unknown as PostWithTeam[]).map((post) => (
-        <PostCard key={post.id} post={post} />
+      {data.pages.map((group, i) => (
+        <div key={i} className="">
+          {(group as unknown as PostWithTeam[]).map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </div>
       ))}
+
+      {/* This div is the "trigger" for the next fetch */}
+      <div ref={ref} className="">
+        {isFetchingNextPage ? (
+          <span className="flex justify-center items-center w-full p-2 text-center text-xs">
+            Loading more...
+          </span>
+        ) : hasNextPage ? (
+          ""
+        ) : (
+          <span className="flex justify-center items-center w-full p-2 text-center text-xs">
+            No more posts!
+          </span>
+        )}
+      </div>
     </div>
   );
 }

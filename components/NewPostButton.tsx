@@ -17,7 +17,7 @@ export async function NewPostButton() {
         </Button>
       )}
       {isLoggedIn && !teamId && (
-        <Button asChild className="w-full flex">
+        <Button asChild className="w-full flex mt-4">
           <Link href="/onboarding">Complete Team Setup</Link>
         </Button>
       )}
