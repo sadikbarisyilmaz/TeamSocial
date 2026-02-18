@@ -10,53 +10,63 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import React, { useState } from "react"; // React is automatically imported in Next.js
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { createPost } from "@/app/actions/posts";
 import { Textarea } from "../ui/textarea";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const CreatePostForm = () => {
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
 
-  const handleCreatePost = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  const queryClient = useQueryClient();
 
-    try {
+  // Define the Mutation
+  const mutation = useMutation({
+    mutationFn: async (postContent: string) => {
       const formData = new FormData();
-      formData.append("content", content);
-
+      formData.append("content", postContent);
       const result = await createPost(formData);
 
-      if (result?.error) {
-        setError(result.error);
-      } else {
-        setOpen(false);
-        setContent(""); // Reset content for next time
-      }
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : "An unexpected error occurred.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
+      if (result?.error) throw new Error(result.error);
+      return result;
+    },
+    onSuccess: () => {
+      // Clear cache and reset UI
+      queryClient.invalidateQueries({ queryKey: ["global-feed"] });
+      setOpen(false);
+      setContent("");
+      setError(null);
+    },
+    onError: (err: Error) => {
+      setError(err.message);
+    },
+  });
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!content.trim()) return;
+    mutation.mutate(content);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => {
+        setOpen(val);
+        if (!val) setError(null); // Clear errors when closing
+      }}
+    >
       <DialogTrigger asChild>
-        <Button className="w-full flex  mt-4">New Post</Button>
+        <Button className="w-full flex mt-4">New Post</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>Create a new post</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleCreatePost}>
+        <form onSubmit={handleFormSubmit}>
           <div className="grid gap-4 py-4">
             <Textarea
               id="content"
@@ -65,6 +75,7 @@ export const CreatePostForm = () => {
               onChange={(e) => setContent(e.target.value)}
               placeholder="What's on your mind?"
               required
+              disabled={mutation.isPending}
             />
           </div>
           {error && <p className="text-sm text-red-500 -mt-2 mb-4">{error}</p>}
@@ -74,8 +85,8 @@ export const CreatePostForm = () => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Posting..." : "Post"}
+            <Button type="submit" disabled={mutation.isPending}>
+              {mutation.isPending ? "Posting..." : "Post"}
             </Button>
           </DialogFooter>
         </form>

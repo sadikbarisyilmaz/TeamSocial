@@ -5,6 +5,7 @@ import { fetchPostsPage, POSTS_PER_PAGE } from "@/lib/queries/posts";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { PostCard, type PostWithTeam } from "./PostCard";
+import { Spinner } from "./ui/spinner";
 
 export default function GlobalFeed() {
   const { ref, inView } = useInView();
@@ -28,12 +29,7 @@ export default function GlobalFeed() {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  if (status === "pending")
-    return (
-      <p className="flex justify-center items-center w-full p-2 text-center text-xs">
-        Loading initial posts...
-      </p>
-    );
+  if (status === "pending") return <Spinner />;
   if (status === "error")
     return (
       <p className="flex justify-center items-center w-full p-2 text-center text-xs">
@@ -54,9 +50,7 @@ export default function GlobalFeed() {
       {/* This div is the "trigger" for the next fetch */}
       <div ref={ref} className="">
         {isFetchingNextPage ? (
-          <span className="flex justify-center items-center w-full p-2 text-center text-xs">
-            Loading more...
-          </span>
+          <Spinner />
         ) : hasNextPage ? (
           ""
         ) : (
