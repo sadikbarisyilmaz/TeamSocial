@@ -13,7 +13,6 @@ export default function OnboardingSteps() {
   useEffect(() => {
     if (step === 4) {
       const timer = setTimeout(() => {
-        // remove after done
         setStep(1);
         router.push("/");
       }, 2000);

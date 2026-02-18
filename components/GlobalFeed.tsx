@@ -17,7 +17,6 @@ export default function GlobalFeed() {
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
         // If the last page was full, assume there's more
-
         return lastPage.length === POSTS_PER_PAGE ? allPages.length : undefined;
       },
     });

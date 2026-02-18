@@ -1,10 +1,4 @@
-import {
-  BriefcaseBusiness,
-  HomeIcon,
-  Settings,
-  User,
-  Users,
-} from "lucide-react";
+import { HomeIcon, Settings, Users } from "lucide-react";
 import { LogoutButton } from "./LogoutButton";
 import Link from "next/link";
 import { NewPostButton } from "./NewPostButton";

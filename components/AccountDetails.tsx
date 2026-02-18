@@ -18,14 +18,14 @@ export async function AccountDetails() {
   return (
     <Card className="m-4">
       <CardHeader>
-        <CardContent className="space-y-4">
-          <h2 className="text-xl">Here are your account details</h2>
-          <Separator />
-          <p className="text-sm">
-            <span className="font-bold"> Email:</span> {email}
-          </p>
-        </CardContent>
+        <h2 className="text-xl">Here are your account details</h2>
       </CardHeader>
+      <Separator />
+      <CardContent className="space-y-4 pt-6">
+        <p className="text-sm">
+          <span className="font-bold"> Email:</span> {email}
+        </p>
+      </CardContent>
     </Card>
   );
 }
