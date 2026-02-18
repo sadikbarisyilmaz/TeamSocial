@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
 import { CopyInviteCode } from "./CopyInviteCode";
 import { getAuth } from "@/lib/getAuth";
 import { Separator } from "./ui/separator";
+import { getMyTeam } from "@/app/actions/teams";
 
 export async function MyTeam() {
   const { teamId, isLoggedIn } = await getAuth();
@@ -21,19 +21,13 @@ export async function MyTeam() {
     redirect("/onboarding");
   }
 
-  const supabase = await createClient();
-  const { data: team, error: teamError } = await supabase
-    .from("teams")
-    .select("name, invite_code")
-    .eq("id", teamId)
-    .single();
-
-  if (teamError) {
-    return <p className="p-4 text-red-500">Error loading team details.</p>;
-  }
+  const { data: team, error: teamError } = await getMyTeam(teamId);
 
   if (!team) {
-    return <p className="p-4">Team not found.</p>;
+    return <p className="p-4 text-red-500">Team not found.</p>;
+  }
+  if (teamError) {
+    return <p className="p-4 text-red-500">Error loading team details.</p>;
   }
 
   const inviteCode = (team as { invite_code?: string | null })?.invite_code;
