@@ -15,7 +15,7 @@ export function LogoutButton() {
   };
 
   return (
-    <Button className="w-full" onClick={logout}>
+    <Button className="w-full" variant={"outline"} onClick={logout}>
       Logout
     </Button>
   );

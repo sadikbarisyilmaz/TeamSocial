@@ -1,4 +1,10 @@
-import { BriefcaseBusiness, HomeIcon, User } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  HomeIcon,
+  Settings,
+  User,
+  Users,
+} from "lucide-react";
 import { LogoutButton } from "./LogoutButton";
 import Link from "next/link";
 import { NewPostButton } from "./NewPostButton";
@@ -25,25 +31,23 @@ export async function Navmenu() {
           <span>
             {isLoggedIn && (
               <Link className="flex gap-2" href={"/team"}>
-                <BriefcaseBusiness size={22} strokeWidth={1.25} />
-                Team
+                <Users size={22} strokeWidth={1.25} />
+                My Team
               </Link>
             )}
           </span>
           <span>
             {isLoggedIn && (
-              <Link className="flex gap-2" href={"/profile"}>
-                <User size={22} strokeWidth={1.25} />
-                Profile
+              <Link className="flex gap-2" href={"/account"}>
+                <Settings size={22} strokeWidth={1.25} />
+                Account
               </Link>
             )}
           </span>
-
-          <span className="flex gap-2">
+          <span className="flex gap-2 mt-4">
             <NewPostButton />
           </span>
         </div>
-
         <span className="flex gap-2 w-full justify-end pb-4">
           {isLoggedIn && (
             <div className="flex w-full gap-2">

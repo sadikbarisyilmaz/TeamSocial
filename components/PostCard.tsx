@@ -51,9 +51,7 @@ export function PostCard({ post }: PostCardProps) {
             <span className="text-sm font-medium group-hover:underline leading-none">
               {post.teams?.name}
             </span>
-            <span className="text-[10px] text-muted-foreground">
-              View profile
-            </span>
+            <span className="text-[10px] text-muted-foreground">View team</span>
           </div>
         </Link>
         <div className="flex">
@@ -73,7 +71,7 @@ export function PostCard({ post }: PostCardProps) {
         {isLongPost && !isExpanded && (
           <button
             onClick={() => setIsExpanded(true)}
-            className="hover:underline text-blue-500 text-sm mt-2 font-bold"
+            className="hover:underline text-blue-700 text-sm mt-2 font-bold"
           >
             Show more
           </button>
@@ -81,7 +79,7 @@ export function PostCard({ post }: PostCardProps) {
         {isLongPost && isExpanded && (
           <button
             onClick={() => setIsExpanded(false)}
-            className="hover:underline text-blue-500 text-sm mt-2 font-bold"
+            className="hover:underline text-blue-700 text-sm mt-2 font-bold"
           >
             Show less
           </button>

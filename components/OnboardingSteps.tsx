@@ -68,7 +68,7 @@ export default function OnboardingSteps() {
       {step === 4 && (
         <div className="flex flex-col items-center gap-4 text-center">
           <h1 className="text-2xl font-bold">
-            Congratulations, profile setup complete!
+            Congratulations, account setup complete!
           </h1>
           <p className="text-muted-foreground">Redirecting to home...</p>
         </div>

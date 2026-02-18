@@ -1,11 +1,10 @@
-// src/lib/auth.ts
 import { cache } from "react";
 import { createClient } from "./supabase/server";
 
 export const getAuth = cache(async () => {
   const supabase = await createClient();
 
-  // Get the session (checks cookies/JWT)
+  // Get the session
   const {
     data: { user },
     error: authError,
@@ -22,7 +21,6 @@ export const getAuth = cache(async () => {
     .single();
 
   // Combine Metadata with a Profile check
-
   return {
     userId: user.id,
     teamId: profile?.team_id ?? null,

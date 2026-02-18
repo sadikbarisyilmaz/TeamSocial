@@ -78,7 +78,7 @@ export default async function FollowingSidebar() {
                 {record.following.name}
               </span>
               <span className="text-[10px] text-muted-foreground">
-                View profile
+                View team
               </span>
             </div>
           </Link>

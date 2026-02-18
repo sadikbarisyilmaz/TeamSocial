@@ -9,6 +9,7 @@ import {
 } from "./ui/card";
 import { CopyInviteCode } from "./CopyInviteCode";
 import { getAuth } from "@/lib/getAuth";
+import { Separator } from "./ui/separator";
 
 export async function MyTeam() {
   const { teamId, isLoggedIn } = await getAuth();
@@ -17,7 +18,7 @@ export async function MyTeam() {
     redirect("/auth/login");
   }
   if (!teamId) {
-    return redirect("/onboarding");
+    redirect("/onboarding");
   }
 
   const supabase = await createClient();
@@ -38,12 +39,12 @@ export async function MyTeam() {
   const inviteCode = (team as { invite_code?: string | null })?.invite_code;
 
   return (
-    <Card className="m-4">
+    <Card className="m-4 space-y-2">
       <CardHeader>
         <CardTitle>{team.name}</CardTitle>
-
         <CardDescription>Here are your team details.</CardDescription>
       </CardHeader>
+      <Separator />
       <CardContent>
         <>
           <h3 className="text-sm font-medium">Invite Code</h3>

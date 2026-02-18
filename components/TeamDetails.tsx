@@ -1,13 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import { CopyInviteCode } from "./CopyInviteCode";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { FollowButton } from "./FollowButton";
 import { getAuth } from "@/lib/getAuth";
 
@@ -15,12 +8,20 @@ export async function TeamDetails({ teamId }: { teamId: string }) {
   const supabase = await createClient();
   const { teamId: myTeamId } = await getAuth();
 
+  if (myTeamId === teamId) {
+    redirect("/team");
+  }
+  if (!myTeamId) {
+    redirect("/onboarding");
+  }
+
   // fetch team data
   const { data: team, error: teamError } = await supabase
     .from("teams")
     .select("name")
     .eq("id", teamId)
     .single();
+
   if (teamError) {
     return <p className="p-4 text-red-500">Error loading team details.</p>;
   }
