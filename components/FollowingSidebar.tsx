@@ -6,19 +6,14 @@ import { Info } from "lucide-react";
 import { getAuth } from "@/lib/getAuth";
 
 export default async function FollowingSidebar() {
-  const { userId, teamId, isLoggedIn, email } = await getAuth();
+  const { teamId, isLoggedIn } = await getAuth();
 
-  if (!isLoggedIn)
+  if (!isLoggedIn || !teamId)
     return (
       <div className="w-full sticky top-4 hidden lg:block min-w-80 max-w-sm  border-muted-foreground/20 m-4 h-fit"></div>
     );
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("team_id")
-    .single();
-
   if (!teamId) return null;
 
   // Fetch last 3 followed teams
