@@ -37,6 +37,8 @@ posting, and basic social relationships.
 - **Team Details:** Expand the application to display a team's profile and post history, allowing users to deep-dive into a single organization's content.
 - **Social Interaction (Follow System):** Integrate a "Follow" button directly onto the Global Feed cards, leveraging the existing `follows` table to allow users to build a custom feed of teams they care about.
 - **Account Management:** Add a user settings dashboard allowing individuals to update their account information (email, password) and manage their team membership details.
+- **Temporary Invite Code:** Instead of hardcoded invite codes in DB, apply a temporary code strategy.
+- **Auto Invite Feature:** Add an option to invite a user to the team via email.
 - **Robust Form Validation:** Implement **Zod** for schema-based validation on both the client and server. This would provide real-time feedback to users and ensure that data (like post length or invite codes) strictly adheres to business rules before hitting the database.
 
 ---
