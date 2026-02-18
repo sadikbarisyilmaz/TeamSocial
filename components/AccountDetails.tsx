@@ -4,16 +4,7 @@ import { getAuth } from "@/lib/getAuth";
 import { Separator } from "./ui/separator";
 
 export async function AccountDetails() {
-  const { teamId, isLoggedIn, email } = await getAuth();
-
-  // if no user is logged in
-  if (!isLoggedIn) {
-    redirect("/auth/login");
-  }
-  // if user doesn't belong to a team
-  if (!teamId) {
-    redirect("/onboarding");
-  }
+  const { email } = await getAuth();
 
   return (
     <Card className="m-4">

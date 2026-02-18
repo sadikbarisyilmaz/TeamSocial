@@ -1,12 +1,20 @@
 import FollowingSidebar from "@/components/FollowingSidebar";
 import { Navbar } from "@/components/Navbar";
+import { getAuth } from "@/lib/getAuth";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { teamId, isLoggedIn } = await getAuth();
+  if (isLoggedIn && !teamId) {
+    console.log("redirecting to onboarding");
+    redirect("/onboarding");
+  }
+
   return (
     <main className="w-full flex h-screen lg:justify-center">
       <Navbar />

@@ -8,17 +8,12 @@ export async function NewPostButton() {
 
   return (
     <div className="w-full">
-      {/* If guest: Show Login. If logged in but no team: Show "Finish Setup"  */}
+      {/* If guest: Show Login.*/}
       {!isLoggedIn && (
         <Button asChild className="w-full flex">
           <Link className="w-full" href="/auth/login">
             Sign in
           </Link>
-        </Button>
-      )}
-      {isLoggedIn && !teamId && (
-        <Button asChild className="w-full flex mt-4">
-          <Link href="/onboarding">Complete Team Setup</Link>
         </Button>
       )}
       {isLoggedIn && teamId && <CreatePostForm />}

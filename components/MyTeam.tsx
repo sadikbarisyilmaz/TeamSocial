@@ -17,9 +17,6 @@ export async function MyTeam() {
   if (!isLoggedIn) {
     redirect("/auth/login");
   }
-  if (!teamId) {
-    redirect("/onboarding");
-  }
 
   const { data: team, error: teamError } = await getMyTeam(teamId);
 
